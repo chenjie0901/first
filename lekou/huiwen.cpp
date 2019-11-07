@@ -7,7 +7,8 @@ int main()
 	printf("\n");
 	int a;
 	int i;
-	int x=1414;
+	int x;
+	scanf_s("%d",&x);
 	long c = 0;
 
 	for (i = 0; i < 20; i++)
