@@ -16,13 +16,13 @@ int main()
 	int num;
 	scanf_s("%d", &num);
 	int numA = num;
-	printf("ÒªÄæ×ªµÄÊı¾İ%d", num);
+	printf("è¦é€†è½¬çš„æ•°æ®æ˜¯%d", num);
 	int wei;
 	for (wei=0;num!=0;num/=10)
 	{
 		wei++;
 	}
-	//printf("Î»ÊıÎª%d\n", wei);
+	//printf("ä½æ•°ä¸º%d\n", wei);
 
 	int last = 0;
 	for (int i = 0; i < wei; i++)
@@ -32,9 +32,6 @@ int main()
 		nowwei = numA / get10n(i) % 10;
 		last += nowwei * get10n(wei - 1 - i);
 	}
-	printf("×ª»»ÒÔºóµÄ½á¹û%d\n",last);
-
-
-
+	printf("è½¬æ¢ä»¥åçš„ç»“æœ%d\n",last);
 	system("pause");
 }
