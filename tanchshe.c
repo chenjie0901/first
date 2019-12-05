@@ -4,36 +4,36 @@
 #include <malloc.h>
 #include <time.h>
 #include <stdlib.h>
-void setmouth(int x, int y);//ÉèÖÃ¹â±ê
-void background();//±³¾°Éú³É
-void setcolour(int a);//ÉèÖÃÑÕÉ«
-void init();//³õÊ¼»¯
-void hidemouth();//Òş²Ø¹â±ê
-void startfood();//³õÊ¼´´½¨Ê³Îï
-void startsnack();//³õÊ¼´´½¨Ğ¡Éß
-void snackmove(int, int);//Ğ¡ÉßÒÆ¶¯
-int checksnack(int);//Ğ¡ÉßÅö×²¼ì²â
-void snackdie();//Ğ¡ÉßËÀÍö
-void showing();//Êä³ö×îĞÂµÄshow
-void screenRefresh(int);//ÆÁÄ»Ë¢ĞÂ
-void newfood();//´´½¨ĞÂÊ³Îï
-void updategoal();//¸üĞÂµÃ·Ö
-int movedire(int, int);//»ñÈ¡Ğ¡ÉßµÄÒÆ¶¯·½Ïò
-int snacklength = 3;//Ğ¡Éß³¤¶È
-int snackhead = 2;//ÉßÍ·
-int snacktail = 0;//ÉßÎ²
-int MaxLine = 40, MaxLie = 40;//¶¨Òå×î´óĞĞÊı£¬ÁĞÊı
-//½á¹¹Ìå±£´æ¸÷¸öÊÂÎïµÄÊôĞÔ
+void setmouth(int x, int y);//è®¾ç½®å…‰æ ‡
+void background();//èƒŒæ™¯ç”Ÿæˆ
+void setcolour(int a);//è®¾ç½®é¢œè‰²
+void init();//åˆå§‹åŒ–
+void hidemouth();//éšè—å…‰æ ‡
+void startfood();//åˆå§‹åˆ›å»ºé£Ÿç‰©
+void startsnack();//åˆå§‹åˆ›å»ºå°è›‡
+void snackmove(int, int);//å°è›‡ç§»åŠ¨
+int checksnack(int);//å°è›‡ç¢°æ’æ£€æµ‹
+void snackdie();//å°è›‡æ­»äº¡
+void showing();//è¾“å‡ºæœ€æ–°çš„show
+void screenRefresh(int);//å±å¹•åˆ·æ–°
+void newfood();//åˆ›å»ºæ–°é£Ÿç‰©
+void updategoal();//æ›´æ–°å¾—åˆ†
+int movedire(int, int);//è·å–å°è›‡çš„ç§»åŠ¨æ–¹å‘
+int snacklength = 3;//å°è›‡é•¿åº¦
+int snackhead = 2;//è›‡å¤´
+int snacktail = 0;//è›‡å°¾
+int MaxLine = 40, MaxLie = 40;//å®šä¹‰æœ€å¤§è¡Œæ•°ï¼Œåˆ—æ•°
+//ç»“æ„ä½“ä¿å­˜å„ä¸ªäº‹ç‰©çš„å±æ€§
 struct map {
 	int colour;
 	int kind;
 	char* display;
 }
-show[40][40], //Õ¹Ê¾µØÍ¼
-wall = { 0x6C,1,"¡ö" },//Ç½Ìå
-livearea = { 0x7F,2,"¡õ" },//Ğ¡Éß»î¶¯ÇøÓò
-food = { 0x7C,3,"¡ï" },//Ê³Îï
-snack = { 0x7A,4,"¡ñ" };//Ğ¡ÉßÉßÌåµÄÊôĞÔ
+show[40][40], //å±•ç¤ºåœ°å›¾
+wall = { 0x6C,1,"â– " },//å¢™ä½“
+livearea = { 0x7F,2,"â–¡" },//å°è›‡æ´»åŠ¨åŒºåŸŸ
+food = { 0x7C,3,"â˜…" },//é£Ÿç‰©
+snack = { 0x7A,4,"â—" };//å°è›‡è›‡ä½“çš„å±æ€§
 
 struct SnackMap
 {
@@ -43,31 +43,31 @@ struct SnackMap
 }SnackSite[100], FoodSite;
 
 /***************************************
-				Ö÷³ÌĞò
+				ä¸»ç¨‹åº
 ****************************************/
 
 int main()
 {
-	int olddirection = 'w'; //³õÊ¼¼üÅÌĞÅºÅ
-	int newdirection = 0;//»ñÈ¡¼üÅÌĞÅºÅ
-	init();//³õÊ¼»¯
+	int olddirection = 'w'; //åˆå§‹é”®ç›˜ä¿¡å·
+	int newdirection = 0;//è·å–é”®ç›˜ä¿¡å·
+	init();//åˆå§‹åŒ–
 
 	setmouth(60, 0);
 	setcolour(0xF0);
-	printf("\nµÃ·Ö£º");
+	printf("\nå¾—åˆ†ï¼š");
 	printf("%d\n", snacklength - 3);
-	printf("ÇëÇĞ»»ÎªÓ¢ÎÄÊäÈë·¨\n");
-	printf("W A S D¼ü·Ö±ğ±íÊ¾£ºÉÏ ×ó ÏÂ ÓÒ\n");
-	printf("Copyright [2019.12.03] by [¹âµçÑ§Ôº]		");
+	printf("è¯·åˆ‡æ¢ä¸ºè‹±æ–‡è¾“å…¥æ³•\n");
+	printf("W A S Dé”®åˆ†åˆ«è¡¨ç¤ºï¼šä¸Š å·¦ ä¸‹ å³\n");
+	printf("Copyright [2019.12.03] by [å…‰ç”µå­¦é™¢]		");
 
 	while (1) {
-		if (_kbhit()) {  //¼ì²â»º³åÇøÖĞÊÇ·ñÓĞÊı¾İ
-			newdirection = tolower(_getch());  //½«»º³åÇøÖĞµÄÊı¾İÒÔ×Ö·ûµÄĞÎÊ½¶Á³ö
+		if (_kbhit()) {  //æ£€æµ‹ç¼“å†²åŒºä¸­æ˜¯å¦æœ‰æ•°æ®
+			newdirection = tolower(_getch());  //å°†ç¼“å†²åŒºä¸­çš„æ•°æ®ä»¥å­—ç¬¦çš„å½¢å¼è¯»å‡º
 			if (newdirection == 27) {
 				break;
 			}
 			else {
-				//»ñÈ¡Ğ¡ÉßĞÂµÄÒÆ¶¯·½Ïò
+				//è·å–å°è›‡æ–°çš„ç§»åŠ¨æ–¹å‘
 				newdirection = movedire(olddirection, newdirection);
 				if (newdirection != olddirection)
 				{
@@ -80,14 +80,14 @@ int main()
 	}
 	return 0;
 }
-//¸üĞÂµÃ·Ö
+//æ›´æ–°å¾—åˆ†
 void updategoal()
 {
 	setcolour(0xF0);
 	setmouth(60, 0);
-	printf("\nµÃ·Ö£º%d", snacklength - 3);
+	printf("\nå¾—åˆ†ï¼š%d", snacklength - 3);
 }
-//Åö×²¼ì²â
+//ç¢°æ’æ£€æµ‹
 int checksnack(int newdirection)
 {
 	switch (newdirection)
@@ -173,7 +173,7 @@ int checksnack(int newdirection)
 	}
 }
 
-//´´½¨ĞÂÊ³Îï
+//åˆ›å»ºæ–°é£Ÿç‰©
 void newfood()
 {
 	srand((unsigned)time(NULL));
@@ -181,7 +181,7 @@ void newfood()
 	FoodSite.y = rand() % 38 + 1;
 }
 
-//Ë¢ĞÂÆÁÄ»
+//åˆ·æ–°å±å¹•
 void screenRefresh(int newdirection)
 {
 	int re = 0;
@@ -214,7 +214,7 @@ void screenRefresh(int newdirection)
 
 }
 /*********************************************
-				»ñÈ¡×îĞÂµÄ·½Ïò
+				è·å–æœ€æ–°çš„æ–¹å‘
 **********************************************/
 int movedire(int olddirection, int newdirection)
 {
@@ -230,7 +230,7 @@ int movedire(int olddirection, int newdirection)
 }
 
 /**********************************
-		  Õ¹Ê¾×îĞÂµÄshow
+		  å±•ç¤ºæœ€æ–°çš„show
 *********************************/
 
 void showing()
@@ -250,20 +250,20 @@ void showing()
 }
 
 /******************************************
-			Ğ¡ÉßËÀÍö
+			å°è›‡æ­»äº¡
 *******************************************/
 
 
 void snackdie()
 {
 	setmouth(20, 5);
-	printf("Game over! °´ÈÎÒâ¼ü½áÊøÓÎÏ·£¡");
+	printf("Game over! æŒ‰ä»»æ„é”®ç»“æŸæ¸¸æˆï¼");
 	Sleep(5000);
 	_getch();
 	exit(0);
 }
 
-//Ğ¡ÉßÒÆ¶¯
+//å°è›‡ç§»åŠ¨
 void snackmove(int newdirection, int re)
 {
 	int i = 0;
@@ -333,7 +333,7 @@ void snackmove(int newdirection, int re)
 
 
 
-//³õÊ¼Ê³Îï
+//åˆå§‹é£Ÿç‰©
 
 
 void startfood()
@@ -345,7 +345,7 @@ void startfood()
 
 
 
-//³õÊ¼Ğ¡Éß
+//åˆå§‹å°è›‡
 
 void startsnack()
 {
@@ -362,28 +362,28 @@ void startsnack()
 }
 
 /*******************************
-	³õÊ¼»¯Éú³Éshow½á¹¹ÌåÊı×é
+	åˆå§‹åŒ–ç”Ÿæˆshowç»“æ„ä½“æ•°ç»„
 *******************************/
 
 void init()
 {
-	//ÉèÖÃ´°¿Ú´óĞ¡
+	//è®¾ç½®çª—å£å¤§å°
 	system("mode con:cols=140 lines=50");
-	//Òş²Ø¹â±ê
+	//éšè—å…‰æ ‡
 	hidemouth();
-	//Éú³É±³¾°Í¼
+	//ç”ŸæˆèƒŒæ™¯å›¾
 	background();
-	//´´½¨³õÊ¼Ê³Îï
+	//åˆ›å»ºåˆå§‹é£Ÿç‰©
 	startfood();
-	//´´½¨³õÊ¼Ğ¡ÉßÉßÌå
+	//åˆ›å»ºåˆå§‹å°è›‡è›‡ä½“
 	startsnack();
-	//ÏÔÊ¾
+	//æ˜¾ç¤º
 	showing();
 }
 
 
 /**************************************
-			Éú³É±³¾°Í¼
+			ç”ŸæˆèƒŒæ™¯å›¾
 **************************************/
 void background()
 {
@@ -405,21 +405,21 @@ void background()
 }
 
 /********************************
-		¶¨Òå¹â±êÎ»ÖÃ
+		å®šä¹‰å…‰æ ‡ä½ç½®
 *********************************/
 
 void setmouth(int x, int y)
 {
 	COORD coord;
-	coord.X = y * 2;  //µÚ3ÁĞ
-	coord.Y = x;  //µÚ3ĞĞ
-	//»ñÈ¡¿ØÖÆÌ¨»º³åÇø¾ä±ú
+	coord.X = y * 2;  //ç¬¬3åˆ—
+	coord.Y = x;  //ç¬¬3è¡Œ
+	//è·å–æ§åˆ¶å°ç¼“å†²åŒºå¥æŸ„
 	HANDLE ConsoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);
-	//ÉèÖÃ¹â±êÎ»ÖÃ
+	//è®¾ç½®å…‰æ ‡ä½ç½®
 	SetConsoleCursorPosition(ConsoleHandle, coord);
 }
 
-//ÉèÖÃÖÖÀàµÄÑÕÉ«
+//è®¾ç½®ç§ç±»çš„é¢œè‰²
 void setcolour(int a)
 {
 	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -427,13 +427,13 @@ void setcolour(int a)
 }
 
 
-//Òş²Ø¹â±ê
+//éšè—å…‰æ ‡
 void hidemouth()
 {
 	HANDLE handle = GetStdHandle(STD_OUTPUT_HANDLE);
 	CONSOLE_CURSOR_INFO CursorInfo;
-	GetConsoleCursorInfo(handle, &CursorInfo);//»ñÈ¡¿ØÖÆÌ¨¹â±êĞÅÏ¢
-	CursorInfo.bVisible = 0; //Òş²Ø¿ØÖÆÌ¨¹â±ê
-	SetConsoleCursorInfo(handle, &CursorInfo);//ÉèÖÃ¿ØÖÆÌ¨¹â±ê×´Ì¬
+	GetConsoleCursorInfo(handle, &CursorInfo);//è·å–æ§åˆ¶å°å…‰æ ‡ä¿¡æ¯
+	CursorInfo.bVisible = 0; //éšè—æ§åˆ¶å°å…‰æ ‡
+	SetConsoleCursorInfo(handle, &CursorInfo);//è®¾ç½®æ§åˆ¶å°å…‰æ ‡çŠ¶æ€
 
 }
